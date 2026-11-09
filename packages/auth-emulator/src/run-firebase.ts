@@ -14,17 +14,16 @@ const TRUE_COLOR_DEPTH = 24;
 function firebaseEnvironment(): NodeJS.ProcessEnv {
   const environment = { ...process.env };
   const forced = environment['FORCE_COLOR'];
+  const colorDisabled =
+    (environment['NO_COLOR'] ?? '') !== '' ||
+    (environment['NODE_DISABLE_COLORS'] ?? '') !== '';
   if (forced !== undefined) {
-    if (
-      forced === '' &&
-      environment['NO_COLOR'] == null &&
-      environment['NODE_DISABLE_COLORS'] == null
-    ) {
+    if (forced === '' && !colorDisabled) {
       environment['FORCE_COLOR'] = '1';
     }
     return environment;
   }
-  if (environment['NO_COLOR'] != null || environment['NODE_DISABLE_COLORS'] != null) {
+  if (colorDisabled) {
     return environment;
   }
   const depth = process.stdout.isTTY ? process.stdout.getColorDepth() : 1;

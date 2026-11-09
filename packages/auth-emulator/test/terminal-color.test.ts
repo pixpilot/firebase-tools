@@ -111,6 +111,16 @@ describe('terminal colors through the Firebase runner', () => {
   });
 
   it.each(['NO_COLOR', 'NODE_DISABLE_COLORS'] as const)(
+    'should normalize empty FORCE_COLOR when %s is also empty',
+    async (name) => {
+      setTerminalDepth(undefined);
+      vi.stubEnv('FORCE_COLOR', '');
+      vi.stubEnv(name, '');
+      await expect(childColor()).resolves.toBe('1');
+    },
+  );
+
+  it.each(['NO_COLOR', 'NODE_DISABLE_COLORS'] as const)(
     'should not disable color for an empty %s',
     async (name) => {
       setTerminalDepth(8);
