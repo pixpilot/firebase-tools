@@ -7,6 +7,39 @@ import process from 'node:process';
 
 const PORT_CONFLICT = /Could not start Authentication Emulator, port taken/u;
 const OUTPUT_TAIL_LENGTH = 8192;
+const ANSI_256_COLOR_DEPTH = 8;
+const TRUE_COLOR_DEPTH = 24;
+
+/** Preserve terminal color support across Firebase's captured output pipes. */
+function firebaseEnvironment(): NodeJS.ProcessEnv {
+  const environment = { ...process.env };
+  const forced = environment['FORCE_COLOR'];
+  if (forced !== undefined) {
+    if (
+      forced === '' &&
+      environment['NO_COLOR'] == null &&
+      environment['NODE_DISABLE_COLORS'] == null
+    ) {
+      environment['FORCE_COLOR'] = '1';
+    }
+    return environment;
+  }
+  if (environment['NO_COLOR'] != null || environment['NODE_DISABLE_COLORS'] != null) {
+    return environment;
+  }
+  const depth = process.stdout.isTTY ? process.stdout.getColorDepth() : 1;
+  if (depth >= 4) {
+    let forceColor = '1';
+    if (depth >= ANSI_256_COLOR_DEPTH) {
+      forceColor = '2';
+    }
+    if (depth >= TRUE_COLOR_DEPTH) {
+      forceColor = '3';
+    }
+    environment['FORCE_COLOR'] = forceColor;
+  }
+  return environment;
+}
 
 /** Run the installed Firebase CLI and preserve its output, environment, and exit status. */
 export async function runFirebase(
@@ -35,6 +68,7 @@ export async function runFirebase(
   }
   const child = spawn(process.execPath, [firebaseCli, ...args], {
     cwd,
+    env: firebaseEnvironment(),
     stdio: ['inherit', 'pipe', 'pipe'],
     windowsHide: true,
     signal: options.signal,

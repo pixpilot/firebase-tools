@@ -36,6 +36,8 @@ const exitCode = await runAuthEmulator({
 
 `runAuthEmulator()` returns the child exit code and throws for configuration or process startup errors. Pass an `AbortSignal` to stop Firebase from a host process; it does not install global signal handlers. The CLI handles terminal shutdown.
 
+When standard output is a color-capable terminal, the runner preserves its color depth for Firebase and child commands despite capturing their output. Explicit color settings and redirected output are respected.
+
 Firebase's `emulators:exec` supplies `FIREBASE_AUTH_EMULATOR_HOST` to the child command. For server-side provider sign-in, compose the separate `@pixpilot-private/auth-firebase-emulator` proxy in the exec command. This runner does not provide provider sign-in, reuse another project's emulator, or choose your project's seed accounts.
 
 Use a distinct demo project ID to keep local projects separate. When running the web app in another terminal, use the Auth address printed by Firebase. Temporary config files are removed on normal shutdown and failures.
