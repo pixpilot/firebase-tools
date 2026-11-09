@@ -9,7 +9,7 @@ Options:
   --import <directory> Seed import directory.
   --exec <command>     Run a shell command inside emulators:exec.
   --ui                 Show the Emulator UI in exec mode.
-  --firebase-cli <file> Override the installed Firebase CLI entry point.
+  --firebase-cli <file> Use a local firebase-tools/lib/bin/firebase.js instead of npx.
   --help               Show this help.
 
 Omit auth.port or ui.port in the config for automatic selection.

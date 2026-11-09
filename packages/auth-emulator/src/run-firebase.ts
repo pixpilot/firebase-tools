@@ -1,7 +1,7 @@
 import type { Buffer } from 'node:buffer';
 import type { AuthEmulatorOptions } from './types';
 import { spawn } from 'node:child_process';
-import { createRequire } from 'node:module';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 
@@ -9,6 +9,41 @@ const PORT_CONFLICT = /Could not start Authentication Emulator, port taken/u;
 const OUTPUT_TAIL_LENGTH = 8192;
 const ANSI_256_COLOR_DEPTH = 8;
 const TRUE_COLOR_DEPTH = 24;
+
+/**
+ * Firebase CLI release launched through npx. It is not a dependency, so its
+ * dependency tree never joins the consumer's install and cannot change how
+ * their packages resolve (for example a second copy of Next.js).
+ */
+export const FIREBASE_TOOLS_VERSION = '15.35.0';
+
+/** Locate npx bundled with the running Node.js (Windows and POSIX layouts). */
+function findNpxCli(): string {
+  const nodeDirectory = path.dirname(process.execPath);
+  const candidates = [
+    path.join(nodeDirectory, 'node_modules/npm/bin/npx-cli.js'),
+    path.join(nodeDirectory, '../lib/node_modules/npm/bin/npx-cli.js'),
+  ];
+  const found = candidates.find((candidate) => existsSync(candidate));
+  if (found === undefined) {
+    throw new Error(
+      'npx was not found next to Node.js. Install firebase-tools and pass its lib/bin/firebase.js as firebaseCliPath (--firebase-cli).',
+    );
+  }
+  return found;
+}
+
+/** Node.js arguments that start the Firebase CLI, before Firebase's own arguments. */
+export function firebaseCommand(firebaseCliPath?: string): string[] {
+  if (firebaseCliPath !== undefined) return [firebaseCliPath];
+  return [
+    findNpxCli(),
+    '--yes',
+    `--package=firebase-tools@${FIREBASE_TOOLS_VERSION}`,
+    '--',
+    'firebase',
+  ];
+}
 
 /** Preserve terminal color support across Firebase's captured output pipes. */
 function firebaseEnvironment(): NodeJS.ProcessEnv {
@@ -40,15 +75,13 @@ function firebaseEnvironment(): NodeJS.ProcessEnv {
   return environment;
 }
 
-/** Run the installed Firebase CLI and preserve its output, environment, and exit status. */
+/** Run the Firebase CLI and preserve its output, environment, and exit status. */
 export async function runFirebase(
   options: AuthEmulatorOptions,
   configFile: string,
   cwd: string,
 ): Promise<{ exitCode: number; portConflict: boolean }> {
-  const firebaseCli =
-    options.firebaseCliPath ??
-    createRequire(import.meta.url).resolve('firebase-tools/lib/bin/firebase.js');
+  const firebase = firebaseCommand(options.firebaseCliPath);
   const args = [
     options.command === undefined ? 'emulators:start' : 'emulators:exec',
     '--only',
@@ -65,7 +98,7 @@ export async function runFirebase(
     if (options.ui === true) args.push('--ui');
     args.push(options.command);
   }
-  const child = spawn(process.execPath, [firebaseCli, ...args], {
+  const child = spawn(process.execPath, [...firebase, ...args], {
     cwd,
     env: firebaseEnvironment(),
     stdio: ['inherit', 'pipe', 'pipe'],

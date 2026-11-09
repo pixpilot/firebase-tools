@@ -54,8 +54,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore"
   },
   "dependencies": {
-    "@pixpilot/net": "catalog:runtime",
-    "firebase-tools": "catalog:runtime"
+    "@pixpilot/net": "catalog:runtime"
   },
   "devDependencies": {
     "@internal/eslint-config": "workspace:*",

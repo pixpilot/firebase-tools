@@ -11,7 +11,7 @@ export interface AuthEmulatorOptions {
   command?: string;
   /** Show the Emulator UI in exec mode. Defaults to false. */
   ui?: boolean;
-  /** Override the installed Firebase CLI's Node.js entry point. */
+  /** Use a locally installed Firebase CLI (firebase-tools/lib/bin/firebase.js) instead of npx. */
   firebaseCliPath?: string;
   /** Abort the Firebase process, for example when the host shuts down. */
   signal?: AbortSignal;

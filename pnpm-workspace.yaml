@@ -5,7 +5,6 @@ packages:
 catalogs:
   runtime:
     '@pixpilot/net': ^0.2.0
-    firebase-tools: ^15.35.0
 
   testing:
     '@vitest/coverage-v8': ^5.1.0

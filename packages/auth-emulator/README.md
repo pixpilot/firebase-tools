@@ -8,7 +8,7 @@ firebase-auth-emulator --project demo-my-app --import emulator-seed
 firebase-auth-emulator --project demo-my-app --import emulator-seed --ui --exec "pnpm dev"
 ```
 
-The installed Firebase CLI is a dependency of this package. No global Firebase CLI or package-manager launcher is required. Paths are relative to the working directory; the config defaults to `firebase.emulator.json`.
+The Firebase CLI (`firebase-tools`, pinned version) runs through the npx bundled with Node.js and is downloaded on first use. It is deliberately not a dependency: its large dependency tree would otherwise join your install and can split shared packages, such as a second copy of Next.js with incompatible types. To use your own install instead, pass `--firebase-cli <path to firebase-tools/lib/bin/firebase.js>` (or `firebaseCliPath`). Paths are relative to the working directory; the config defaults to `firebase.emulator.json`.
 
 ```json
 {
