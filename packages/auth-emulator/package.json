@@ -1,15 +1,17 @@
 {
-  "name": "example-package",
+  "name": "@pixpilot/firebase-auth-emulator",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "packageManager": "pnpm@10.34.9",
-  "author": "",
+  "description": "Run the Firebase Auth Emulator with automatic ports and child-command lifecycle management.",
+  "author": "Mo Doaie <m.doaie@hotmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pixpilot/firebase-tools.git",
+    "directory": "packages/auth-emulator"
+  },
   "keywords": [],
-  "exports": "./src/index.ts",
-  "files": [
-    "dist"
-  ],
   "publishConfig": {
     "access": "public",
     "exports": {
@@ -21,7 +23,21 @@
     },
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
-    "types": "./dist/index.d.ts"
+    "types": "./dist/index.d.ts",
+    "bin": {
+      "firebase-auth-emulator": "./dist/cli.js"
+    }
+  },
+  "sideEffects": false,
+  "exports": "./src/index.ts",
+  "bin": {
+    "firebase-auth-emulator": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
   },
   "scripts": {
     "prepublishOnly": "pnpm run clean && pnpm run build",
@@ -37,6 +53,10 @@
     "lint": "eslint",
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore"
   },
+  "dependencies": {
+    "@pixpilot/net": "catalog:runtime",
+    "firebase-tools": "catalog:runtime"
+  },
   "devDependencies": {
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
@@ -45,6 +65,8 @@
     "@internal/vitest-config": "workspace:*",
     "@pixpilot/dev-config": "catalog:config",
     "@types/node": "catalog:typescript",
-    "tsdown": "catalog:build"
+    "tsdown": "catalog:build",
+    "typescript": "catalog:typescript",
+    "vitest": "catalog:testing"
   }
 }
