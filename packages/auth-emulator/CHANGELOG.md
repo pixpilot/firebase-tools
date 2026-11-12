@@ -1,5 +1,12 @@
 # @pixpilot/firebase-auth-emulator
 
+## 0.4.0
+
+### Minor Changes
+
+- run Firebase CLI through npx
+- 3e78ef9: Run the Firebase CLI through npx instead of depending on `firebase-tools`, so its dependency tree no longer joins the consumer's install and splits shared packages such as Next.js.
+
 ## 0.3.0
 
 ### Minor Changes
