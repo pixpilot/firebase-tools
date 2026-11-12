@@ -1,5 +1,11 @@
 # @pixpilot/firebase-auth-emulator
 
+## 0.5.0
+
+### Minor Changes
+
+- enhance port selection logic for automatic Auth startup
+
 ## 0.4.0
 
 ### Minor Changes
