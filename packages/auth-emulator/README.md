@@ -19,7 +19,7 @@ The Firebase CLI (`firebase-tools`, pinned version) runs through the npx bundled
 }
 ```
 
-Omit `auth.port` for automatic selection starting at 9099, using `@pixpilot/net`. Omit `ui.port` for Firebase's automatic UI port selection. Set a numeric port to keep it fixed: conflicts fail rather than changing your choice. Automatic Auth startup conflicts retry up to five times. The original config and environment files are never rewritten.
+Omit `auth.port` for automatic selection from 9099 through 65535, using `@pixpilot/net`. Omit `ui.port` for Firebase's automatic UI port selection. Set a numeric port to keep it fixed: conflicts fail rather than changing your choice. Automatic Auth startup conflicts retry up to five times. The original config and environment files are never rewritten.
 
 ```ts
 import { runAuthEmulator } from '@pixpilot/firebase-auth-emulator';

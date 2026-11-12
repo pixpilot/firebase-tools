@@ -79,6 +79,22 @@ describe('runAuthEmulator', () => {
     expect(value.calls()[0]!.config.emulators.ui?.port).toBe(9099);
   });
 
+  it('should select a port beyond the first 100 when they are excluded', async () => {
+    const value = fixture();
+    const emulators = Object.fromEntries(
+      Array.from({ length: 100 }, (_, index) => [
+        `reserved${index}`,
+        { port: 9099 + index },
+      ]),
+    );
+    writeFileSync(
+      value.configFile,
+      JSON.stringify({ emulators: { ...emulators, auth: { host: '127.0.0.1' } } }),
+    );
+    await expect(runAuthEmulator(value.options)).resolves.toBe(0);
+    expect(value.calls()[0]!.config.emulators.auth.port).toBeGreaterThanOrEqual(9199);
+  });
+
   it('should retry startup conflicts only for automatic Auth ports', async () => {
     const value = fixture({ conflicts: 1 });
     await expect(runAuthEmulator(value.options)).resolves.toBe(0);

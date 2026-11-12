@@ -8,6 +8,7 @@ import { readEmulatorConfig } from './read-emulator-config';
 import { runFirebase } from './run-firebase';
 
 const DEFAULT_AUTH_PORT = 9099;
+const MAX_PORT = 65535;
 const MAX_START_ATTEMPTS = 5;
 
 /** Start an isolated Auth emulator, selecting omitted ports at runtime and preserving fixed ports. */
@@ -46,6 +47,7 @@ export async function runAuthEmulator(options: AuthEmulatorOptions): Promise<num
         config.emulators.auth.port = await findAvailablePort(DEFAULT_AUTH_PORT, {
           host: config.emulators.auth.host ?? '127.0.0.1',
           exclude: excluded,
+          maxAttempts: MAX_PORT - DEFAULT_AUTH_PORT + 1,
         });
       }
       const configFile = path.join(temporaryDirectory, 'firebase.json');
