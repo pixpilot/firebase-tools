@@ -17,7 +17,7 @@ catalogs:
     rimraf: ^6.1.4
     tsdown: ^0.23.7
     tsx: ^4.23.15
-    turbo: ^2.11.10
+    turbo: ^2.11.11
     unrun: ^0.3.1
 
   typescript:
@@ -29,7 +29,7 @@ catalogs:
     eslint: ^10.14.0
 
   format:
-    prettier: ^3.9.10
+    prettier: ^3.10.1
 
   git:
     '@changesets/cli': ^2.31.1
@@ -44,4 +44,4 @@ catalogs:
 overrides:
   '@types/node': catalog:typescript
 catalog:
-  eslint-plugin-turbo: ^2.11.10
+  eslint-plugin-turbo: ^2.11.11
