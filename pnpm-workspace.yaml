@@ -7,9 +7,9 @@ catalogs:
     '@pixpilot/net': ^0.2.0
 
   testing:
-    '@vitest/coverage-v8': ^5.1.0
-    '@vitest/ui': ^5.1.0
-    vitest: ^5.1.0
+    '@vitest/coverage-v8': ^5.1.1
+    '@vitest/ui': ^5.1.1
+    vitest: ^5.1.1
 
   build:
     '@pixpilot/tsdown-config': ^0.8.3
@@ -17,7 +17,7 @@ catalogs:
     rimraf: ^6.1.4
     tsdown: ^0.23.7
     tsx: ^4.23.15
-    turbo: ^2.11.11
+    turbo: ^2.11.13
     unrun: ^0.3.1
 
   typescript:
@@ -36,7 +36,7 @@ catalogs:
     '@commitlint/cli': ^21.2.4
     '@commitlint/config-conventional': ^21.2.4
     husky: ^9.1.7
-    lint-staged: ^17.6.0
+    lint-staged: ^17.6.1
 
   config:
     '@pixpilot/dev-config': ^3.22.1
@@ -44,4 +44,4 @@ catalogs:
 overrides:
   '@types/node': catalog:typescript
 catalog:
-  eslint-plugin-turbo: ^2.11.11
+  eslint-plugin-turbo: ^2.11.13
